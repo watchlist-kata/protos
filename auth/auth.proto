@@ -3,7 +3,7 @@ syntax = "proto3";
 package auth;
 
 
-option go_package = ".;proto";
+option go_package = "github.com/watchlist-kata/protos/auth";
 
 
 message LoginRequest {
