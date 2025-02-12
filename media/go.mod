@@ -1,4 +1,4 @@
-module github.com/watchlist-kata/protos/media
+module github.com/watchlist-kata/protos/media/v2
 
 go 1.22.7
 
