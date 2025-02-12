@@ -4,11 +4,8 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c642c45-273f-4dc8-9b10-bcc6620c7f5a" name="Changes" comment="Экспериментальная заливка pb файлов">
-      <change afterPath="$PROJECT_DIR$/media/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/media/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/media.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/media/media.pb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/media.proto" beforeDir="false" afterPath="$PROJECT_DIR$/media/media.proto" afterDir="false" />
+    <list default="true" id="0c642c45-273f-4dc8-9b10-bcc6620c7f5a" name="Changes" comment="Обновил модели и сгенерировал новые .pb файлы">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,6 +14,7 @@
   </component>
   <component name="GOROOT" url="file://$USER_HOME$/go/go1.22.7" />
   <component name="Git.Settings">
+    <option name="PUSH_AUTO_UPDATE" value="true" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -54,7 +52,7 @@
     "git-widget-placeholder": "main",
     "go.import.settings.migrated": "true",
     "go.sdk.automatically.set": "true",
-    "last_opened_file_path": "/home/denis/GolandProjects/watchlist-kata/protos",
+    "last_opened_file_path": "/home/denis/GolandProjects/watchlist-kata/media",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "nodejs_package_manager_path": "npm"
@@ -72,11 +70,23 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Убрал ненужные, как оказалось, аннотации, изменил название пакета на github.com/watchlist-kata/protos/media" />
     <MESSAGE value="Экспериментальная заливка pb файлов" />
-    <option name="LAST_COMMIT_MESSAGE" value="Экспериментальная заливка pb файлов" />
+    <MESSAGE value="Обновил модели и сгенерировал новые .pb файлы" />
+    <option name="LAST_COMMIT_MESSAGE" value="Обновил модели и сгенерировал новые .pb файлы" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
