@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+package media;
+
+option go_package = "github.com/watchlist-kata/protos/media";
+
+// Общая модель для медиа (для нашей базы данных)
+message Media {
+  int64 id = 1;          // ID в вашей базе данных
+  int64 tmdb_id = 2;       // ID в TMDB
+  string type = 3;         // Тип: movie / tv
+  string title = 4;        // Название
+  string original_title = 5; // Оригинальное название (если есть)
+  string description = 6;  // Описание
+  string release_date = 7; // Дата релиза
+  string poster = 8;       // URL постера
+}
+
+// Модель для результата поиска TMDB
+message TMDBMedia {
+  bool adult = 1;            // Для взрослых
+  string backdrop_path = 2;    // Путь к фоновому изображению
+  int64 id = 3;              // ID в TMDB
+  string title = 4;           // Название (для фильмов)
+  string original_language = 5; // Оригинальный язык
+  string original_title = 6;  // Оригинальное название (для фильмов)
+  string overview = 7;          // Описание
+  string poster_path = 8;       // Путь к постеру
+  string media_type = 9;       // Тип медиа (movie, tv, person)
+  repeated int32 genre_ids = 10; // Список ID жанров
+  float popularity = 11;       // Популярность
+  string release_date = 12;    // Дата релиза
+  bool video = 13;           // Видео
+  float vote_average = 14;      // Средний рейтинг
+  int32 vote_count = 15;        // Количество голосов в рейтинге
+  string name = 16;           // Название / имя (для сериалов и людей)
+  string original_name = 17;    // Оригинальное название (для сериалов)
+  string first_air_date = 18;   // Дата первого эфира (для сериалов)
+}
+
+// Запросы и ответы
+message GetMediaByIDRequest {
+  int64 id = 1;
+}
+
+message GetMediasByNameRequest {
+  string name = 1;
+}
+
+message SaveMediaRequest {
+  Media media = 1;
+}
+
+message MediaList {
+  repeated Media medias = 1;
+}
+
+message SearchTMDBRequest {
+  string name = 1;
+}
+
+message SearchTMDBResponse {
+  repeated TMDBMedia results = 1;  // Список результатов поиска TMDB
+}
+
+service MediaService {
+  rpc GetMediaByID (GetMediaByIDRequest) returns (Media);
+  rpc GetMediasByName (GetMediasByNameRequest) returns (MediaList);
+  rpc SaveMedia (SaveMediaRequest) returns (Media);
+  rpc UpdateMedia (SaveMediaRequest) returns (Media);
+  rpc SearchTMDB(SearchTMDBRequest) returns (SearchTMDBResponse);
+}
