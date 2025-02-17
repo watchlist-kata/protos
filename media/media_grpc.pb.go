@@ -24,6 +24,7 @@ const (
 	MediaService_SaveMedia_FullMethodName       = "/media.MediaService/SaveMedia"
 	MediaService_UpdateMedia_FullMethodName     = "/media.MediaService/UpdateMedia"
 	MediaService_SearchTMDB_FullMethodName      = "/media.MediaService/SearchTMDB"
+	MediaService_DeleteMedia_FullMethodName     = "/media.MediaService/DeleteMedia"
 )
 
 // MediaServiceClient is the client API for MediaService service.
@@ -35,6 +36,7 @@ type MediaServiceClient interface {
 	SaveMedia(ctx context.Context, in *SaveMediaRequest, opts ...grpc.CallOption) (*Media, error)
 	UpdateMedia(ctx context.Context, in *SaveMediaRequest, opts ...grpc.CallOption) (*Media, error)
 	SearchTMDB(ctx context.Context, in *SearchTMDBRequest, opts ...grpc.CallOption) (*SearchTMDBResponse, error)
+	DeleteMedia(ctx context.Context, in *DeleteMediaRequest, opts ...grpc.CallOption) (*DeleteMediaResponse, error)
 }
 
 type mediaServiceClient struct {
@@ -95,6 +97,16 @@ func (c *mediaServiceClient) SearchTMDB(ctx context.Context, in *SearchTMDBReque
 	return out, nil
 }
 
+func (c *mediaServiceClient) DeleteMedia(ctx context.Context, in *DeleteMediaRequest, opts ...grpc.CallOption) (*DeleteMediaResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteMediaResponse)
+	err := c.cc.Invoke(ctx, MediaService_DeleteMedia_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MediaServiceServer is the server API for MediaService service.
 // All implementations must embed UnimplementedMediaServiceServer
 // for forward compatibility.
@@ -104,6 +116,7 @@ type MediaServiceServer interface {
 	SaveMedia(context.Context, *SaveMediaRequest) (*Media, error)
 	UpdateMedia(context.Context, *SaveMediaRequest) (*Media, error)
 	SearchTMDB(context.Context, *SearchTMDBRequest) (*SearchTMDBResponse, error)
+	DeleteMedia(context.Context, *DeleteMediaRequest) (*DeleteMediaResponse, error)
 	mustEmbedUnimplementedMediaServiceServer()
 }
 
@@ -128,6 +141,9 @@ func (UnimplementedMediaServiceServer) UpdateMedia(context.Context, *SaveMediaRe
 }
 func (UnimplementedMediaServiceServer) SearchTMDB(context.Context, *SearchTMDBRequest) (*SearchTMDBResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SearchTMDB not implemented")
+}
+func (UnimplementedMediaServiceServer) DeleteMedia(context.Context, *DeleteMediaRequest) (*DeleteMediaResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteMedia not implemented")
 }
 func (UnimplementedMediaServiceServer) mustEmbedUnimplementedMediaServiceServer() {}
 func (UnimplementedMediaServiceServer) testEmbeddedByValue()                      {}
@@ -240,6 +256,24 @@ func _MediaService_SearchTMDB_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MediaService_DeleteMedia_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteMediaRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MediaServiceServer).DeleteMedia(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MediaService_DeleteMedia_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MediaServiceServer).DeleteMedia(ctx, req.(*DeleteMediaRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // MediaService_ServiceDesc is the grpc.ServiceDesc for MediaService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -266,6 +300,10 @@ var MediaService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SearchTMDB",
 			Handler:    _MediaService_SearchTMDB_Handler,
+		},
+		{
+			MethodName: "DeleteMedia",
+			Handler:    _MediaService_DeleteMedia_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
