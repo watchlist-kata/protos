@@ -4,7 +4,7 @@ syntax = "proto3";
 
 package media;
 
-option go_package = "github.com/watchlist-kata/protos/media/v2";
+option go_package = "github.com/watchlist-kata/protos/media";
 
 // Общая модель для медиа (для нашей базы данных)
 message Media {
