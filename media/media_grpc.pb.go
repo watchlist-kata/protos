@@ -25,7 +25,7 @@ const (
 	MediaService_GetMediasByName_FullMethodName = "/media.MediaService/GetMediasByName"
 	MediaService_SaveMedia_FullMethodName       = "/media.MediaService/SaveMedia"
 	MediaService_UpdateMedia_FullMethodName     = "/media.MediaService/UpdateMedia"
-	MediaService_SearchTMDB_FullMethodName      = "/media.MediaService/SearchTMDB"
+	MediaService_SearchKinopoisk_FullMethodName = "/media.MediaService/SearchKinopoisk"
 	MediaService_DeleteMedia_FullMethodName     = "/media.MediaService/DeleteMedia"
 )
 
@@ -37,7 +37,7 @@ type MediaServiceClient interface {
 	GetMediasByName(ctx context.Context, in *GetMediasByNameRequest, opts ...grpc.CallOption) (*MediaList, error)
 	SaveMedia(ctx context.Context, in *SaveMediaRequest, opts ...grpc.CallOption) (*Media, error)
 	UpdateMedia(ctx context.Context, in *SaveMediaRequest, opts ...grpc.CallOption) (*Media, error)
-	SearchTMDB(ctx context.Context, in *SearchTMDBRequest, opts ...grpc.CallOption) (*MediaList, error)
+	SearchKinopoisk(ctx context.Context, in *SearchKinopoiskRequest, opts ...grpc.CallOption) (*MediaList, error)
 	DeleteMedia(ctx context.Context, in *DeleteMediaRequest, opts ...grpc.CallOption) (*DeleteMediaResponse, error)
 }
 
@@ -89,10 +89,10 @@ func (c *mediaServiceClient) UpdateMedia(ctx context.Context, in *SaveMediaReque
 	return out, nil
 }
 
-func (c *mediaServiceClient) SearchTMDB(ctx context.Context, in *SearchTMDBRequest, opts ...grpc.CallOption) (*MediaList, error) {
+func (c *mediaServiceClient) SearchKinopoisk(ctx context.Context, in *SearchKinopoiskRequest, opts ...grpc.CallOption) (*MediaList, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(MediaList)
-	err := c.cc.Invoke(ctx, MediaService_SearchTMDB_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, MediaService_SearchKinopoisk_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -117,7 +117,7 @@ type MediaServiceServer interface {
 	GetMediasByName(context.Context, *GetMediasByNameRequest) (*MediaList, error)
 	SaveMedia(context.Context, *SaveMediaRequest) (*Media, error)
 	UpdateMedia(context.Context, *SaveMediaRequest) (*Media, error)
-	SearchTMDB(context.Context, *SearchTMDBRequest) (*MediaList, error)
+	SearchKinopoisk(context.Context, *SearchKinopoiskRequest) (*MediaList, error)
 	DeleteMedia(context.Context, *DeleteMediaRequest) (*DeleteMediaResponse, error)
 	mustEmbedUnimplementedMediaServiceServer()
 }
@@ -141,8 +141,8 @@ func (UnimplementedMediaServiceServer) SaveMedia(context.Context, *SaveMediaRequ
 func (UnimplementedMediaServiceServer) UpdateMedia(context.Context, *SaveMediaRequest) (*Media, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateMedia not implemented")
 }
-func (UnimplementedMediaServiceServer) SearchTMDB(context.Context, *SearchTMDBRequest) (*MediaList, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SearchTMDB not implemented")
+func (UnimplementedMediaServiceServer) SearchKinopoisk(context.Context, *SearchKinopoiskRequest) (*MediaList, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SearchKinopoisk not implemented")
 }
 func (UnimplementedMediaServiceServer) DeleteMedia(context.Context, *DeleteMediaRequest) (*DeleteMediaResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteMedia not implemented")
@@ -240,20 +240,20 @@ func _MediaService_UpdateMedia_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
-func _MediaService_SearchTMDB_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SearchTMDBRequest)
+func _MediaService_SearchKinopoisk_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SearchKinopoiskRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MediaServiceServer).SearchTMDB(ctx, in)
+		return srv.(MediaServiceServer).SearchKinopoisk(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: MediaService_SearchTMDB_FullMethodName,
+		FullMethod: MediaService_SearchKinopoisk_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MediaServiceServer).SearchTMDB(ctx, req.(*SearchTMDBRequest))
+		return srv.(MediaServiceServer).SearchKinopoisk(ctx, req.(*SearchKinopoiskRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -300,8 +300,8 @@ var MediaService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _MediaService_UpdateMedia_Handler,
 		},
 		{
-			MethodName: "SearchTMDB",
-			Handler:    _MediaService_SearchTMDB_Handler,
+			MethodName: "SearchKinopoisk",
+			Handler:    _MediaService_SearchKinopoisk_Handler,
 		},
 		{
 			MethodName: "DeleteMedia",

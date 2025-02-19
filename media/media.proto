@@ -39,17 +39,17 @@ message MediaList {
   repeated Media medias = 1;
 }
 
-message SearchTMDBRequest {
+message SearchKinopoiskRequest {
   string name = 1;
 }
 
 // Запрос на удаление медиа
 message DeleteMediaRequest {
-  int64 id = 1;               // ID медиа, которое нужно удалить
+  int64 id = 1;
 }
 
 message DeleteMediaResponse {
-  bool success = 1;           // Успех операции удаления
+  bool success = 1;
 }
 
 service MediaService {
@@ -57,7 +57,6 @@ service MediaService {
   rpc GetMediasByName (GetMediasByNameRequest) returns (MediaList);
   rpc SaveMedia (SaveMediaRequest) returns (Media);
   rpc UpdateMedia (SaveMediaRequest) returns (Media);
-  rpc SearchTMDB (SearchTMDBRequest) returns (MediaList);
+  rpc SearchKinopoisk (SearchKinopoiskRequest) returns (MediaList);
   rpc DeleteMedia (DeleteMediaRequest) returns (DeleteMediaResponse);
 }
-
