@@ -8,14 +8,18 @@ option go_package = "github.com/watchlist-kata/protos/media";
 
 // Общая модель для медиа (для нашей базы данных)
 message Media {
-  int64 id = 1;          // ID в нашей базе данных
-  int64 tmdb_id = 2;     // ID в TMDB
-  string type = 3;       // Тип: movie / tv
-  string title = 4;      // Название
-  string original_title = 5; // Оригинальное название (если есть)
-  string description = 6; // Описание
-  string release_date = 7; // Дата релиза
-  string poster = 8;     // URL постера
+  int64 id = 1;               // ID в нашей базе данных
+  int64 kinopoisk_id = 2;     // ID в Кинопоиске
+  string type = 3;            // Тип: movie / tv
+  string name_en = 4;         // Название на английском
+  string name_ru = 5;         // Название на русском
+  string description = 6;      // Описание
+  string year = 7;            // Год выпуска
+  string poster = 8;          // URL постера
+  string countries = 9;       // Страны (через запятую)
+  string genres = 10;         // Жанры (через запятую)
+  string created_at = 11;     // Дата создания (в формате RFC3339)
+  string updated_at = 12;     // Дата обновления (в формате RFC3339)
 }
 
 // Запросы и ответы
@@ -41,11 +45,11 @@ message SearchTMDBRequest {
 
 // Запрос на удаление медиа
 message DeleteMediaRequest {
-  int64 id = 1;  // ID медиа, которое нужно удалить
+  int64 id = 1;               // ID медиа, которое нужно удалить
 }
 
 message DeleteMediaResponse {
-  bool success = 1;  // Успех операции удаления
+  bool success = 1;           // Успех операции удаления
 }
 
 service MediaService {
@@ -56,3 +60,4 @@ service MediaService {
   rpc SearchTMDB (SearchTMDBRequest) returns (MediaList);
   rpc DeleteMedia (DeleteMediaRequest) returns (DeleteMediaResponse);
 }
+
