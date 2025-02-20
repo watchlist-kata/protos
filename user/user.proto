@@ -1,0 +1,80 @@
+// protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative user.proto
+
+syntax = "proto3";
+
+package user;
+
+option go_package = "github.com/watchlist-kata/protos/user";
+
+// Модель пользователя
+message User {
+  int64 id = 1;                // Уникальный идентификатор пользователя
+  string username = 2;         // Имя пользователя
+  string email = 3;            // Электронная почта
+  string pwdhash = 4;          // Хеш пароля
+  string salt = 5;             // Соль для хеширования пароля
+  string created_at = 6;       // Дата создания (в формате RFC3339)
+  string updated_at = 7;       // Дата обновления (в формате RFC3339)
+}
+
+// Запрос на создание пользователя
+message CreateUserRequest {
+  string username = 1;         // Имя пользователя
+  string email = 2;            // Электронная почта
+  string password = 3;         // Пароль
+}
+
+// Ответ на создание пользователя
+message CreateUserResponse {
+  User user = 1;               // Созданный пользователь
+}
+
+// Запрос на получение информации о пользователе по ID
+message GetUserRequest {
+  int64 id = 1;                // ID пользователя
+}
+
+// Ответ на запрос информации о пользователе
+message GetUserResponse {
+  User user = 1;               // Пользователь
+}
+
+// Запрос на обновление информации о пользователе
+message UpdateUserRequest {
+  User user = 1;               // Обновляемый пользователь
+}
+
+// Ответ на обновление информации о пользователе
+message UpdateUserResponse {
+  User user = 1;               // Обновлённый пользователь
+}
+
+// Запрос на удаление пользователя по ID
+message DeleteUserRequest {
+  int64 id = 1;                // ID пользователя для удаления
+}
+
+// Ответ на удаление пользователя
+message DeleteUserResponse {
+  bool success = 1;            // Успех операции удаления
+}
+
+// Запрос на проверку пароля
+message CheckPasswordRequest {
+  int64 user_id = 1;           // ID пользователя
+  string password = 2;         // Пароль для проверки
+}
+
+// Ответ на проверку пароля
+message CheckPasswordResponse {
+  bool valid = 1;              // Является ли пароль правильным
+}
+
+// Определение сервиса пользователей
+service UserService {
+  rpc Create(CreateUserRequest) returns (CreateUserResponse);
+  rpc GetByID(GetUserRequest) returns (GetUserResponse);
+  rpc Update(UpdateUserRequest) returns (UpdateUserResponse);
+  rpc Delete(DeleteUserRequest) returns (DeleteUserResponse);
+  rpc CheckPass(CheckPasswordRequest) returns (CheckPasswordResponse);
+}
