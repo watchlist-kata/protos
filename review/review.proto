@@ -1,0 +1,114 @@
+// protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative review.proto
+
+syntax = "proto3";
+
+package review;
+
+option go_package = "github.com/watchlist-kata/protos/review";
+
+// Модель отзыва
+message Review {
+  int64 id = 1;                // Уникальный идентификатор отзыва
+  int64 media_id = 2;          // ID медиа, на которое оставлен отзыв
+  int64 user_id = 3;           // ID пользователя, оставившего отзыв
+  string content = 4;          // Содержимое отзыва
+  int32 rating = 5;            // Оценка отзыва
+  string created_at = 6;       // Дата создания (в формате RFC3339)
+  string updated_at = 7;       // Дата обновления (в формате RFC3339)
+}
+
+// Запрос на создание отзыва
+message CreateReviewRequest {
+  int64 media_id = 1;          // ID медиа, на которое оставляется отзыв
+  int64 user_id = 2;           // ID пользователя, оставляющего отзыв
+  string content = 3;          // Содержимое отзыва
+  int32 rating = 4;            // Оценка отзыва
+}
+
+// Ответ на создание отзыва
+message CreateReviewResponse {
+  Review review = 1;           // Созданный отзыв
+}
+
+// Запрос на получение отзыва по ID
+message GetReviewRequest {
+  int64 id = 1;                // ID отзыва
+}
+
+// Ответ на запрос получения отзыва
+message GetReviewResponse {
+  Review review = 1;           // Отзыв
+}
+
+// Запрос на обновление отзыва
+message UpdateReviewRequest {
+  int64 id = 1;                // ID отзыва для обновления
+  string content = 2;          // Новое содержимое отзыва (если необходимо)
+  int32 rating = 3;            // Новая оценка (если необходимо)
+}
+
+// Ответ на обновление отзыва
+message UpdateReviewResponse {
+  Review review = 1;           // Обновленный отзыв
+}
+
+// Запрос на удаление отзыва по ID
+message DeleteReviewRequest {
+  int64 id = 1;                // ID отзыва для удаления
+}
+
+// Ответ на удаление отзыва
+message DeleteReviewResponse {
+  bool success = 1;            // Успех операции удаления
+}
+
+// Запрос на получение всех отзывов
+message GetAllReviewsRequest { }
+
+// Ответ на запрос получения всех отзывов
+message GetAllReviewsResponse {
+  repeated Review reviews = 1; // Список всех отзывов
+}
+
+// Запрос на получение отзывов по рейтингу
+message GetByRatingRequest {
+  int32 rating = 1;            // Рейтинг для фильтрации отзывов
+}
+
+// Ответ на запрос получения отзывов по рейтингу
+message GetByRatingResponse {
+  repeated Review reviews = 1; // Список отзывов с заданным рейтингом
+}
+
+// Запрос на получение отзывов по пользователю
+message GetByUserRequest {
+  int64 user_id = 1;           // ID пользователя для фильтрации отзывов
+}
+
+// Ответ на запрос получения отзывов по пользователю
+message GetByUserResponse {
+  repeated Review reviews = 1; // Список отзывов данного пользователя
+}
+
+// Запрос на получение отзывов по медиа-идентификатору
+message GetByMediaRequest {
+  int64 media_id = 1;          // ID медиа для фильтрации отзывов
+}
+
+// Ответ на запрос получения отзывов по медиа-идентификатору
+message GetByMediaResponse {
+  repeated Review reviews = 1; // Список отзывов данного медиа-контента
+}
+
+// Определение сервиса отзывов
+service ReviewService {
+  rpc Create(CreateReviewRequest) returns (CreateReviewResponse);
+  rpc GetByID(GetReviewRequest) returns (GetReviewResponse);
+  rpc Update(UpdateReviewRequest) returns (UpdateReviewResponse);
+  rpc Delete(DeleteReviewRequest) returns (DeleteReviewResponse);
+
+  rpc GetAll(GetAllReviewsRequest) returns (GetAllReviewsResponse);
+  rpc GetByRating(GetByRatingRequest) returns (GetByRatingResponse);
+  rpc GetByUser(GetByUserRequest) returns (GetByUserResponse);
+  rpc GetByMedia(GetByMediaRequest) returns (GetByMediaResponse);
+}
