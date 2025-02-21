@@ -17,7 +17,7 @@ message User {
   string updated_at = 7;       // Дата обновления (в формате RFC3339)
 }
 
-// Запрос на создание пользователя
+// Запрос на создание/обновление пользователя
 message CreateUserRequest {
   string username = 1;         // Имя пользователя
   string email = 2;            // Электронная почта
@@ -37,16 +37,6 @@ message GetUserRequest {
 // Ответ на запрос информации о пользователе
 message GetUserResponse {
   User user = 1;               // Пользователь
-}
-
-// Запрос на обновление информации о пользователе
-message UpdateUserRequest {
-  User user = 1;               // Обновляемый пользователь
-}
-
-// Ответ на обновление информации о пользователе
-message UpdateUserResponse {
-  User user = 1;               // Обновлённый пользователь
 }
 
 // Запрос на удаление пользователя по ID
@@ -74,7 +64,7 @@ message CheckPasswordResponse {
 service UserService {
   rpc Create(CreateUserRequest) returns (CreateUserResponse);
   rpc GetByID(GetUserRequest) returns (GetUserResponse);
-  rpc Update(UpdateUserRequest) returns (UpdateUserResponse);
+  rpc Update(CreateUserRequest) returns (CreateUserResponse); // Не дублируем модели
   rpc Delete(DeleteUserRequest) returns (DeleteUserResponse);
   rpc CheckPass(CheckPasswordRequest) returns (CheckPasswordResponse);
 }
