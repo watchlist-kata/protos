@@ -36,7 +36,7 @@ const (
 type UserServiceClient interface {
 	Create(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
 	GetByID(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
-	Update(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
+	Update(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error)
 	Delete(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*DeleteUserResponse, error)
 	CheckPass(ctx context.Context, in *CheckPasswordRequest, opts ...grpc.CallOption) (*CheckPasswordResponse, error)
 }
@@ -69,9 +69,9 @@ func (c *userServiceClient) GetByID(ctx context.Context, in *GetUserRequest, opt
 	return out, nil
 }
 
-func (c *userServiceClient) Update(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error) {
+func (c *userServiceClient) Update(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(CreateUserResponse)
+	out := new(UpdateUserResponse)
 	err := c.cc.Invoke(ctx, UserService_Update_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -107,7 +107,7 @@ func (c *userServiceClient) CheckPass(ctx context.Context, in *CheckPasswordRequ
 type UserServiceServer interface {
 	Create(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
 	GetByID(context.Context, *GetUserRequest) (*GetUserResponse, error)
-	Update(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
+	Update(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error)
 	Delete(context.Context, *DeleteUserRequest) (*DeleteUserResponse, error)
 	CheckPass(context.Context, *CheckPasswordRequest) (*CheckPasswordResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
@@ -126,7 +126,7 @@ func (UnimplementedUserServiceServer) Create(context.Context, *CreateUserRequest
 func (UnimplementedUserServiceServer) GetByID(context.Context, *GetUserRequest) (*GetUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetByID not implemented")
 }
-func (UnimplementedUserServiceServer) Update(context.Context, *CreateUserRequest) (*CreateUserResponse, error) {
+func (UnimplementedUserServiceServer) Update(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
 }
 func (UnimplementedUserServiceServer) Delete(context.Context, *DeleteUserRequest) (*DeleteUserResponse, error) {
@@ -193,7 +193,7 @@ func _UserService_GetByID_Handler(srv interface{}, ctx context.Context, dec func
 }
 
 func _UserService_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateUserRequest)
+	in := new(UpdateUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -205,7 +205,7 @@ func _UserService_Update_Handler(srv interface{}, ctx context.Context, dec func(
 		FullMethod: UserService_Update_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServiceServer).Update(ctx, req.(*CreateUserRequest))
+		return srv.(UserServiceServer).Update(ctx, req.(*UpdateUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
