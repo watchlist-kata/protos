@@ -1,0 +1,57 @@
+// protoc --proto_path=. --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative subscription.proto
+
+syntax = "proto3";
+
+option go_package = "github.com/watchlist-kata/protos/subscription;subscription";
+
+package subscription;
+
+// Запрос на подписку на пользователя
+message SubscribeRequest {
+  int64 subscriber_id = 1; // ID пользователя, который подписывается
+  int64 subscribe_to_id = 2; // ID пользователя, на которого подписываются
+}
+
+// Ответ на запрос подписки
+message SubscribeResponse {
+  bool success = 1; // Успешно ли выполнена подписка
+}
+
+// Запрос на отписку от пользователя
+message UnsubscribeRequest {
+  int64 subscriber_id = 1; // ID пользователя, который отписывается
+  int64 unsubscribe_to_id = 2; // ID пользователя, от которого отписываются
+}
+
+// Ответ на запрос отписки
+message UnsubscribeResponse {
+  bool success = 1; // Успешно ли выполнена отписка
+}
+
+// Запрос на получение списка подписок пользователя
+message GetSubscriptionsRequest {
+  int64 user_id = 1; // ID пользователя, для которого получаем список подписок
+}
+
+// Ответ на запрос списка подписок
+message GetSubscriptionsResponse {
+  repeated int64 subscribed_to_ids = 1; // Список ID пользователей, на которых подписан пользователь
+}
+
+// Запрос на получение списка подписчиков пользователя
+message GetSubscribersRequest {
+  int64 user_id = 1; // ID пользователя, для которого получаем список подписчиков
+}
+
+// Ответ на запрос списка подписчиков
+message GetSubscribersResponse {
+  repeated int64 subscriber_ids = 1; // Список ID пользователей, которые подписаны на пользователя
+}
+
+// Сервис для управления подписками
+service SubscriptionService {
+  rpc Subscribe(SubscribeRequest) returns (SubscribeResponse) {} // Подписаться на пользователя
+  rpc Unsubscribe(UnsubscribeRequest) returns (UnsubscribeResponse) {} // Отписаться от пользователя
+  rpc GetSubscriptions(GetSubscriptionsRequest) returns (GetSubscriptionsResponse) {} // Получить список подписок пользователя
+  rpc GetSubscribers(GetSubscribersRequest) returns (GetSubscribersResponse) {} // Получить список подписчиков пользователя
+}
