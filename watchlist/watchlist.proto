@@ -1,0 +1,66 @@
+// protoc --proto_path=. --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative watchlist.proto
+
+syntax = "proto3";
+
+option go_package = "github.com/watchlist-kata/protos/watchlist";
+
+package watchlist;
+
+// Элемент списка просмотра
+message WatchlistItem {
+  int64 id = 1;
+  int64 media_id = 2;
+  int64 user_id = 3;
+  string created_at = 4;
+}
+
+// Запрос на добавление медиа в список просмотра
+message AddToWatchlistRequest {
+  int64 media_id = 1;
+  int64 user_id = 2;
+}
+
+// Ответ на добавление медиа в список просмотра
+message AddToWatchlistResponse {
+  bool success = 1;
+}
+
+// Запрос на удаление медиа из списка просмотра
+message RemoveFromWatchlistRequest {
+  int64 media_id = 1;
+  int64 user_id = 2;
+}
+
+// Ответ на удаление медиа из списка просмотра
+message RemoveFromWatchlistResponse {
+  bool success = 1;
+}
+
+// Запрос на получение списка просмотра пользователя
+message GetWatchlistRequest {
+  int64 user_id = 1;
+}
+
+// Ответ на получение списка просмотра пользователя
+message GetWatchlistResponse {
+  repeated WatchlistItem watchlists = 1;
+}
+
+// Запрос на проверку наличия медиа в списке просмотра
+message CheckInWatchlistRequest {
+  int64 media_id = 1;
+  int64 user_id = 2;
+}
+
+// Ответ на проверку наличия медиа в списке просмотра
+message CheckInWatchlistResponse {
+  bool in_watchlist = 1;
+}
+
+// Сервис для работы со списками просмотра
+service WatchlistService {
+  rpc AddToWatchlist(AddToWatchlistRequest) returns (AddToWatchlistResponse) {}
+  rpc RemoveFromWatchlist(RemoveFromWatchlistRequest) returns (RemoveFromWatchlistResponse) {}
+  rpc GetWatchlist(GetWatchlistRequest) returns (GetWatchlistResponse) {}
+  rpc CheckInWatchlist(CheckInWatchlistRequest) returns (CheckInWatchlistResponse) {}
+}
