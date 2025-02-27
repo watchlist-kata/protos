@@ -73,9 +73,11 @@ message GetWatchlistsResponse {
 message WatchlistItem {
   int64 media_id = 1; // ID медиа в вотчлисте
   int64 user_id = 2; // ID пользователя, которому принадлежит вотчлист
-  string title = 3; // Название медиа
-  string description = 4; // Описание медиа
+  string user_name = 3; // Имя пользователя, которому принадлежит вотчлист
+  string title = 4; // Название медиа
+  string description = 5; // Описание медиа
 }
+
 
 // Запрос на получение отзывов пользователей, на которых подписан пользователь
 message GetReviewsRequest {
@@ -91,8 +93,11 @@ message GetReviewsResponse {
 message ReviewItem {
   int64 review_id = 1; // ID отзыва
   int64 user_id = 2; // ID пользователя, оставившего отзыв
-  string content = 3; // Содержимое отзыва
-  int32 rating = 4; // Оценка отзыва
+  string user_name = 3; // Имя пользователя, оставившего отзыв
+  string content = 4; // Содержимое отзыва
+  int32 rating = 5; // Оценка отзыва
+  string media_name = 6; // Название медиа
+  string media_year = 7; // Год выхода медиа
 }
 
 // Сервис для управления подписками
