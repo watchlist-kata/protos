@@ -21,10 +21,13 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	SubscriptionService_Subscribe_FullMethodName        = "/subscription.SubscriptionService/Subscribe"
-	SubscriptionService_Unsubscribe_FullMethodName      = "/subscription.SubscriptionService/Unsubscribe"
-	SubscriptionService_GetSubscriptions_FullMethodName = "/subscription.SubscriptionService/GetSubscriptions"
-	SubscriptionService_GetSubscribers_FullMethodName   = "/subscription.SubscriptionService/GetSubscribers"
+	SubscriptionService_Subscribe_FullMethodName                   = "/subscription.SubscriptionService/Subscribe"
+	SubscriptionService_Unsubscribe_FullMethodName                 = "/subscription.SubscriptionService/Unsubscribe"
+	SubscriptionService_GetSubscriptions_FullMethodName            = "/subscription.SubscriptionService/GetSubscriptions"
+	SubscriptionService_GetSubscribers_FullMethodName              = "/subscription.SubscriptionService/GetSubscribers"
+	SubscriptionService_CheckSubscription_FullMethodName           = "/subscription.SubscriptionService/CheckSubscription"
+	SubscriptionService_GetWatchlistsBySubscription_FullMethodName = "/subscription.SubscriptionService/GetWatchlistsBySubscription"
+	SubscriptionService_GetReviewsBySubscription_FullMethodName    = "/subscription.SubscriptionService/GetReviewsBySubscription"
 )
 
 // SubscriptionServiceClient is the client API for SubscriptionService service.
@@ -37,6 +40,9 @@ type SubscriptionServiceClient interface {
 	Unsubscribe(ctx context.Context, in *UnsubscribeRequest, opts ...grpc.CallOption) (*UnsubscribeResponse, error)
 	GetSubscriptions(ctx context.Context, in *GetSubscriptionsRequest, opts ...grpc.CallOption) (*GetSubscriptionsResponse, error)
 	GetSubscribers(ctx context.Context, in *GetSubscribersRequest, opts ...grpc.CallOption) (*GetSubscribersResponse, error)
+	CheckSubscription(ctx context.Context, in *CheckSubscriptionRequest, opts ...grpc.CallOption) (*CheckSubscriptionResponse, error)
+	GetWatchlistsBySubscription(ctx context.Context, in *GetWatchlistsRequest, opts ...grpc.CallOption) (*GetWatchlistsResponse, error)
+	GetReviewsBySubscription(ctx context.Context, in *GetReviewsRequest, opts ...grpc.CallOption) (*GetReviewsResponse, error)
 }
 
 type subscriptionServiceClient struct {
@@ -87,6 +93,36 @@ func (c *subscriptionServiceClient) GetSubscribers(ctx context.Context, in *GetS
 	return out, nil
 }
 
+func (c *subscriptionServiceClient) CheckSubscription(ctx context.Context, in *CheckSubscriptionRequest, opts ...grpc.CallOption) (*CheckSubscriptionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CheckSubscriptionResponse)
+	err := c.cc.Invoke(ctx, SubscriptionService_CheckSubscription_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *subscriptionServiceClient) GetWatchlistsBySubscription(ctx context.Context, in *GetWatchlistsRequest, opts ...grpc.CallOption) (*GetWatchlistsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetWatchlistsResponse)
+	err := c.cc.Invoke(ctx, SubscriptionService_GetWatchlistsBySubscription_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *subscriptionServiceClient) GetReviewsBySubscription(ctx context.Context, in *GetReviewsRequest, opts ...grpc.CallOption) (*GetReviewsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetReviewsResponse)
+	err := c.cc.Invoke(ctx, SubscriptionService_GetReviewsBySubscription_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SubscriptionServiceServer is the server API for SubscriptionService service.
 // All implementations must embed UnimplementedSubscriptionServiceServer
 // for forward compatibility.
@@ -97,6 +133,9 @@ type SubscriptionServiceServer interface {
 	Unsubscribe(context.Context, *UnsubscribeRequest) (*UnsubscribeResponse, error)
 	GetSubscriptions(context.Context, *GetSubscriptionsRequest) (*GetSubscriptionsResponse, error)
 	GetSubscribers(context.Context, *GetSubscribersRequest) (*GetSubscribersResponse, error)
+	CheckSubscription(context.Context, *CheckSubscriptionRequest) (*CheckSubscriptionResponse, error)
+	GetWatchlistsBySubscription(context.Context, *GetWatchlistsRequest) (*GetWatchlistsResponse, error)
+	GetReviewsBySubscription(context.Context, *GetReviewsRequest) (*GetReviewsResponse, error)
 	mustEmbedUnimplementedSubscriptionServiceServer()
 }
 
@@ -118,6 +157,15 @@ func (UnimplementedSubscriptionServiceServer) GetSubscriptions(context.Context, 
 }
 func (UnimplementedSubscriptionServiceServer) GetSubscribers(context.Context, *GetSubscribersRequest) (*GetSubscribersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSubscribers not implemented")
+}
+func (UnimplementedSubscriptionServiceServer) CheckSubscription(context.Context, *CheckSubscriptionRequest) (*CheckSubscriptionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CheckSubscription not implemented")
+}
+func (UnimplementedSubscriptionServiceServer) GetWatchlistsBySubscription(context.Context, *GetWatchlistsRequest) (*GetWatchlistsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetWatchlistsBySubscription not implemented")
+}
+func (UnimplementedSubscriptionServiceServer) GetReviewsBySubscription(context.Context, *GetReviewsRequest) (*GetReviewsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetReviewsBySubscription not implemented")
 }
 func (UnimplementedSubscriptionServiceServer) mustEmbedUnimplementedSubscriptionServiceServer() {}
 func (UnimplementedSubscriptionServiceServer) testEmbeddedByValue()                             {}
@@ -212,6 +260,60 @@ func _SubscriptionService_GetSubscribers_Handler(srv interface{}, ctx context.Co
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SubscriptionService_CheckSubscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CheckSubscriptionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SubscriptionServiceServer).CheckSubscription(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SubscriptionService_CheckSubscription_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SubscriptionServiceServer).CheckSubscription(ctx, req.(*CheckSubscriptionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SubscriptionService_GetWatchlistsBySubscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetWatchlistsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SubscriptionServiceServer).GetWatchlistsBySubscription(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SubscriptionService_GetWatchlistsBySubscription_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SubscriptionServiceServer).GetWatchlistsBySubscription(ctx, req.(*GetWatchlistsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SubscriptionService_GetReviewsBySubscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetReviewsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SubscriptionServiceServer).GetReviewsBySubscription(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SubscriptionService_GetReviewsBySubscription_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SubscriptionServiceServer).GetReviewsBySubscription(ctx, req.(*GetReviewsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SubscriptionService_ServiceDesc is the grpc.ServiceDesc for SubscriptionService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -234,6 +336,18 @@ var SubscriptionService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetSubscribers",
 			Handler:    _SubscriptionService_GetSubscribers_Handler,
+		},
+		{
+			MethodName: "CheckSubscription",
+			Handler:    _SubscriptionService_CheckSubscription_Handler,
+		},
+		{
+			MethodName: "GetWatchlistsBySubscription",
+			Handler:    _SubscriptionService_GetWatchlistsBySubscription_Handler,
+		},
+		{
+			MethodName: "GetReviewsBySubscription",
+			Handler:    _SubscriptionService_GetReviewsBySubscription_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -2,7 +2,7 @@
 
 syntax = "proto3";
 
-option go_package = "github.com/watchlist-kata/protos/subscription;subscription";
+option go_package = "github.com/watchlist-kata/protos/subscription";
 
 package subscription;
 
@@ -20,7 +20,7 @@ message SubscribeResponse {
 // Запрос на отписку от пользователя
 message UnsubscribeRequest {
   int64 subscriber_id = 1; // ID пользователя, который отписывается
-  int64 unsubscribe_to_id = 2; // ID пользователя, от которого отписываются
+  int64 unsubscribe_from_id = 2; // ID пользователя, от которого отписываются
 }
 
 // Ответ на запрос отписки
@@ -48,10 +48,60 @@ message GetSubscribersResponse {
   repeated int64 subscriber_ids = 1; // Список ID пользователей, которые подписаны на пользователя
 }
 
+// Запрос на проверку подписки
+message CheckSubscriptionRequest {
+  int64 subscriber_id = 1; // ID пользователя, который подписывается
+  int64 subscribe_to_id = 2; // ID пользователя, на которого подписываются
+}
+
+// Ответ на запрос проверки подписки
+message CheckSubscriptionResponse {
+  bool is_subscribed = 1; // Подписан ли пользователь
+}
+
+// Запрос на получение вотчлистов пользователей, на которых подписан пользователь
+message GetWatchlistsRequest {
+  int64 user_id = 1; // ID пользователя, для которого получаем вотчлисты подписок
+}
+
+// Ответ на запрос вотчлистов
+message GetWatchlistsResponse {
+  repeated WatchlistItem watchlists = 1; // Список вотчлистов
+}
+
+// Элемент вотчлиста
+message WatchlistItem {
+  int64 media_id = 1; // ID медиа в вотчлисте
+  int64 user_id = 2; // ID пользователя, которому принадлежит вотчлист
+  string title = 3; // Название медиа
+  string description = 4; // Описание медиа
+}
+
+// Запрос на получение отзывов пользователей, на которых подписан пользователь
+message GetReviewsRequest {
+  int64 user_id = 1; // ID пользователя, для которого получаем отзывы подписок
+}
+
+// Ответ на запрос отзывов
+message GetReviewsResponse {
+  repeated ReviewItem reviews = 1; // Список отзывов
+}
+
+// Элемент отзыва
+message ReviewItem {
+  int64 review_id = 1; // ID отзыва
+  int64 user_id = 2; // ID пользователя, оставившего отзыв
+  string content = 3; // Содержимое отзыва
+  int32 rating = 4; // Оценка отзыва
+}
+
 // Сервис для управления подписками
 service SubscriptionService {
   rpc Subscribe(SubscribeRequest) returns (SubscribeResponse) {} // Подписаться на пользователя
   rpc Unsubscribe(UnsubscribeRequest) returns (UnsubscribeResponse) {} // Отписаться от пользователя
   rpc GetSubscriptions(GetSubscriptionsRequest) returns (GetSubscriptionsResponse) {} // Получить список подписок пользователя
   rpc GetSubscribers(GetSubscribersRequest) returns (GetSubscribersResponse) {} // Получить список подписчиков пользователя
+  rpc CheckSubscription(CheckSubscriptionRequest) returns (CheckSubscriptionResponse) {} // Проверить подписку
+  rpc GetWatchlistsBySubscription(GetWatchlistsRequest) returns (GetWatchlistsResponse) {} // Получить вотчлисты подписок
+  rpc GetReviewsBySubscription(GetReviewsRequest) returns (GetReviewsResponse) {} // Получить отзывы подписок
 }
